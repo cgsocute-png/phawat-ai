@@ -1,22 +1,40 @@
-<script>
-async function sendMessage() {
-  const input = document.getElementById("userInput");
-  const message = input.value;
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Phawat AI</title>
+</head>
+<body>
+  <h2>Phawat AI 💙</h2>
 
-  const response = await fetch("/api/chat", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ message })
-  });
+  <div id="chatBox"></div>
 
-  const data = await response.json();
+  <input id="userInput" type="text" placeholder="พิมพ์ข้อความ">
+  <button onclick="sendMessage()">ส่ง</button>
 
-  const chatBox = document.getElementById("chatBox");
-  chatBox.innerHTML += "<p><b>คุณ:</b> " + message + "</p>";
-  chatBox.innerHTML += "<p><b>แฟน:</b> " + data.reply + "</p>";
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById("userInput");
+      const message = input.value;
 
-  input.value = "";
-}
-</script>
+      if (!message) return;
+
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ message })
+      });
+
+      const data = await response.json();
+
+      const chatBox = document.getElementById("chatBox");
+      chatBox.innerHTML += "<p><b>คุณ:</b> " + message + "</p>";
+      chatBox.innerHTML += "<p><b>AI:</b> " + data.reply + "</p>";
+
+      input.value = "";
+    }
+  </script>
+</body>
+</html>
