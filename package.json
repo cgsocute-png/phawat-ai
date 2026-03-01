@@ -1,9 +1,0 @@
-{
-  "name": "phawat-ai",
-  "version": "1.0.0",
-  "type": "module",
-  "dependencies": {
-    "express": "^4.18.2",
-    "openai": "^4.0.0"
-  }
-}
