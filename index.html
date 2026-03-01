@@ -14,27 +14,39 @@
 
   <script>
     async function sendMessage() {
-      const input = document.getElementById("userInput");
-      const message = input.value;
+      <script>
+async function sendMessage() {
+  const input = document.getElementById("userInput");
+  const message = input.value;
 
-      if (!message) return;
+  if (!message) return;
 
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ message })
-      });
+  const chatBox = document.getElementById("chatBox");
+  chatBox.innerHTML += "<p><b>คุณ:</b> " + message + "</p>";
 
-      const data = await response.json();
+  try {
+    const response = await fetch("/api/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ message })
+    });
 
-      const chatBox = document.getElementById("chatBox");
-      chatBox.innerHTML += "<p><b>คุณ:</b> " + message + "</p>";
+    const data = await response.json();
+
+    if (data.reply) {
       chatBox.innerHTML += "<p><b>AI:</b> " + data.reply + "</p>";
-
-      input.value = "";
+    } else {
+      chatBox.innerHTML += "<p style='color:red'><b>ERROR:</b> " + JSON.stringify(data) + "</p>";
     }
-  </script>
+
+  } catch (err) {
+    chatBox.innerHTML += "<p style='color:red'><b>FETCH ERROR:</b> " + err.message + "</p>";
+  }
+
+  input.value = "";
+}
+</script>
 </body>
 </html>
