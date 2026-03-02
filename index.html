@@ -14,39 +14,37 @@
 
   <script>
     async function sendMessage() {
-      <script>
-async function sendMessage() {
-  const input = document.getElementById("userInput");
-  const message = input.value;
+      const input = document.getElementById("userInput");
+      const message = input.value;
 
-  if (!message) return;
+      if (!message) return;
 
-  const chatBox = document.getElementById("chatBox");
-  chatBox.innerHTML += "<p><b>คุณ:</b> " + message + "</p>";
+      const chatBox = document.getElementById("chatBox");
+      chatBox.innerHTML += "<p><b>คุณ:</b> " + message + "</p>";
 
-  try {
-    const response = await fetch("/api/chat", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ message })
-    });
+      try {
+        const response = await fetch("/api/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ message })
+        });
 
-    const data = await response.json();
+        const data = await response.json();
 
-    if (data.reply) {
-      chatBox.innerHTML += "<p><b>AI:</b> " + data.reply + "</p>";
-    } else {
-      chatBox.innerHTML += "<p style='color:red'><b>ERROR:</b> " + JSON.stringify(data) + "</p>";
+        if (data.reply) {
+          chatBox.innerHTML += "<p><b>AI:</b> " + data.reply + "</p>";
+        } else {
+          chatBox.innerHTML += "<p style='color:red'><b>ERROR:</b> " + JSON.stringify(data) + "</p>";
+        }
+
+      } catch (err) {
+        chatBox.innerHTML += "<p style='color:red'><b>FETCH ERROR:</b> " + err.message + "</p>";
+      }
+
+      input.value = "";
     }
-
-  } catch (err) {
-    chatBox.innerHTML += "<p style='color:red'><b>FETCH ERROR:</b> " + err.message + "</p>";
-  }
-
-  input.value = "";
-}
-</script>
+  </script>
 </body>
 </html>
